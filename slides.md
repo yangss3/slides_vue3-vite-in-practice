@@ -23,22 +23,9 @@ drawings:
 
 ---
 
-# 什么是前端工程化？
-
-将开发阶段的代码发布到生产环境，包含：构建，分支管理，自动化测试，部署
-
-提升前端开发效率、提高前端应用质量的方法和工具都是前端工程化
-
-提升开发效率、提升产品质量、降低开发难度、降低企业成本应该是工程化的意义所在。
-
-工程化划分了5部分：开发、构建、部署、性能、规范化
-
-
----
-
 # Vue3 & Vite
 
-从一个最简单的 Vue3 应用开始
+一个最简单的 Vue3 应用
 
 <div class="grid grid-cols-2 gap-6">
 <div v-click>
@@ -90,8 +77,12 @@ createApp(App).mount('#app')
 </div>
 
 <!--
-vue3 正式版发布已经有一年多了，也是目前最流行的前端框架之一，大家应该都已经开始用了。
-vite 也是最近非常火的一个前端开发和构建工具，它冷启动和热更新速度非常快，比 webpack 快的多
+vue3 正式版发布已经有一年多了，也是目前最流行的前端框架之一，
+
+从使用者的角度来看，vue3最大的变化应该是更好的typescript支持和Composition API 的引入。
+相信大家应该都已经开始用了。这里就不多说了。
+
+然后 Vite 也是最近非常火的一个前端开发和构建工具，它冷启动和热更新速度非常快，web开发工具这一块大有取代webpack之势
 
 我们先从一个最简单应用开始，要在 vite 上把 vue3 的应用跑起来非常简单，大概只需要四部
 
@@ -114,8 +105,7 @@ vite 的一个特点就开箱即用，很多东西有已经预设好了，你基
   对于vite项目来说，index.html 才是应用的入口文件，开发环境下，浏览器充当了bundler的角色，浏览器从index.html开始解析你的模块视图
 
   这里必须要设置 type="module" 这个属性告诉浏览器 src/main.js 是个es 模块，这样它才能正确解析
- -->
-
+-->
 
 ---
 
@@ -352,10 +342,12 @@ export default defineConfig({
 <!--
 这里再推荐一个最近很火的原子css框架，可以让你快速的构建你的 UI，同时你不需要去写很多样式
 
-比如我们只需要使用 windicss 提供的原子类，就能快速实现这样一个 button。
+
+
+比如已windicss为例，我们只需要使用它提供的原子类，就能快速实现这样一个 button。
 
 windicss 会按需帮你生成对应的css代码，所以不用担心生成环境的性能问题
- -->
+-->
 
 ---
 
@@ -586,6 +578,10 @@ function increment() {
 }
 </style>
 
+<!--
+比如对这个一个模板，它的script快，我们用正常的写法是这样
+-->
+
 ---
 
 # 组件自动导入
@@ -646,7 +642,10 @@ import Components from 'unplugin-vue-components/vite'
 
 export default defineConfig({
   plugins: [
-    Components()
+    Components({
+      // default
+      dirs: "src/components"
+    })
   ]
 })
 ```
@@ -733,10 +732,9 @@ export default defineConfig({
 </STwoCols>
 
 <!--
-很多API在我们在项目中需要经常使用，例如 vue 的那些组合式 api，几乎每个sfc中我们都有用到，所以每次都需要 import 进来会很繁琐。
+很多API在我们在项目中需要经常使用，例如 vue 的那些组合式 api，几乎每个sfc中我们都有用到，所以每次都需要 import 进来会很繁琐，而且它属于体力后。
 
 这个过程可以通过 vite 插件在编译时阶段帮你做
-
 -->
 
 ---
