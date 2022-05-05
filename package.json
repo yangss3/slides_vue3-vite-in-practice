@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build": "slidev build",
+    "build": "slidev build --base /slides_vue3-vite-in-practice/",
     "dev": "slidev",
     "export": "slidev export",
     "export:dark": "slidev export --dark",
