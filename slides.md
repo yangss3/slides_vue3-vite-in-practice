@@ -7,6 +7,7 @@ class: text-center
 highlighter: shiki
 drawings:
   persist: false
+download: true
 ---
 
 # Vue3 + Vite 前端工程化实践
@@ -125,7 +126,7 @@ npm install -D typescript
 </div>
 <div v-click class="mt-40px">
 
-**从 JS 切换为 TS**
+**将 JS 切换为 TS**
 
 <div class="flex items-center">
 
@@ -208,15 +209,15 @@ export default defineComponent({
 <!--
 vite 提供了开箱即用的 ts 支持
 
-基本上除了安装 typescript之外，不需要做任何其它配置，就可以直接在项目里使用 ts
+基本上除了安装 typescript，然后将js切换为ts之外，不需要做任何其它配置，就可以直接在项目里写 ts 了
 
-为了获得更好的类型检查，以及让ts被正确转译，还需要提供一个 tsconfig.json 文件
+不过为了获得更好的类型检查，以及让ts能被正确转译，还需要提供一个 tsconfig.json 文件
  -->
 ---
 
 # CSS 方案
 
-CSS 预处理器 / PostCSS Preset Env
+CSS 预处理器 / [PostCSS Preset Env](https://preset-env.netlify.app/)
 
 <STwoCols class="-mt-4">
 <div v-click>
@@ -236,7 +237,7 @@ npm install -D stylus
 
 </div>
 
-<div v-click>
+<div v-click class="-mt-50px">
 
 <p class="font-bold">写标准的现代 CSS - <a target="_blank" href="https://preset-env.cssdb.org/">PostCSS Preset Env</a>
 <!-- <SBadge>推荐</SBadge> -->
@@ -254,7 +255,11 @@ import PostCSSPresetEnv from 'postcss-preset-env'
 export default defineConfig({
   css: {
     postcss: {
-      plugins: [PostCSSPresetEnv({ stage: 1 })]
+      plugins: [
+        PostCSSPresetEnv({ 
+          features: { 'nesting-rules': true }
+        })
+      ]
     }
   }
 })
@@ -264,7 +269,7 @@ export default defineConfig({
 </STwoCols>
 
 <!--
-https://github.com/csstools/postcss-plugins/tree/main/plugin-packs/postcss-preset-env
+https://preset-env.netlify.app/
 
 vite 对这些预处理器都提供了预设，你只需要在项目中安装对应的预处理器，就可以直接使用了
 
@@ -278,7 +283,7 @@ vite 对这些预处理器都提供了预设，你只需要在项目中安装对
 
 # CSS 方案
 
-最流行的原子 CSS 框架：[Tailwind CSS](https://tailwindcss.com/) / [Windi CSS](https://windicss.org/)
+原子 CSS 框架：[Tailwind CSS](https://tailwindcss.com/) / [Windi CSS](https://windicss.org/) / [UnoCSS](https://uno.antfu.me)
 
 <div v-click="1" class="flex items-center gap-x-4">
 
@@ -297,7 +302,7 @@ vite 对这些预处理器都提供了预设，你只需要在项目中安装对
 
 **安装：**
 ```bash
-npm install -D windicss vite-plugin-windicss
+npm install -D unocss
 ```
 
 </div>
@@ -309,45 +314,43 @@ npm install -D windicss vite-plugin-windicss
 ```ts
 // vite.config.ts
 import { defineConfig } from 'vite'
-import WindiCSS from 'vite-plugin-windicss'
+import UnoCSS from 'unocss/vite'
 
 export default defineConfig({
   plugins: [
-    WindiCSS()
+    UnoCSS()
   ]
 })
 
 // main.ts
-import 'virtual:windi.css'
+import 'uno.css'
 ```
 
 </div>
-<div v-click="4">
+<div v-click="4" class="-mt-40px">
 
-`windi.config.ts`：
 ```ts
-import { defineConfig } from 'windicss/helpers'
+// unocss.config.ts
+import {
+  defineConfig, presetUno, presetIcons,
+  transformerDirectives, transformerVariantGroup
+} from 'unocss'
 
 export default defineConfig({
-  extract: {
-    include: ['src/**/*.{vue,html,ts,tsx}'],
-    exclude: ['node_modules', '.git']
-  }
+  presets: [
+    presetUno(),
+    presetIcons()
+  ],
+  transformers: [
+    transformerDirectives(),
+    transformerVariantGroup()
+  ]
 })
 ```
 
 </div>
+
 </STwoCols>
-
-<!--
-这里再推荐一个最近很火的原子css框架，可以让你快速的构建你的 UI，同时你不需要去写很多样式
-
-
-
-比如已windicss为例，我们只需要使用它提供的原子类，就能快速实现这样一个 button。
-
-windicss 会按需帮你生成对应的css代码，所以不用担心生成环境的性能问题
--->
 
 ---
 
@@ -365,8 +368,7 @@ windicss 会按需帮你生成对应的css代码，所以不用担心生成环�
 ```ts
 // router.ts
 import {
-  createRouter,
-  createWebHistory
+  createRouter, createWebHistory
 } from 'vue-router'
 
 export default createRouter({
@@ -420,12 +422,12 @@ export default defineComponent({
 
 <style>
 .two-cols { @apply -mt-10px; }
-.two-cols p { @apply !mt-1 !mb-1; }
+.two-cols p { @apply !mt-2 !mb-2; }
 </style>
 
 
 <!--
-vue-router 4 是针对 Vue 3 路由库，它也使用了组合式 API 的写法，在v4里 vue-router 不在是一个类，而是一堆组合函数。
+vue-router 4 是针对 Vue 3 升级的路由库，它也使用了组合式 API 的写法，在v4里 vue-router 不在是一个类，而是一堆组合函数。
 除了这点不一样，其它概念和用法基本和v3 一样，这里就不多说了
  -->
 
@@ -505,7 +507,7 @@ export default defineComponent({
 
 <!--
 
-pinia 是 vue 新一代的状态管理库，vuex 因为对TS的支持很差，而且很难在现有的架构下进行改造，所以在vue3里已经不推荐使用了，当然你想用还是可以用
+pinia 是 vue 新一代的状态管理库，vuex 因为对TS的支持很差，而且很难在保留现有API的条件下进行改造，所以在vue3里已经不推荐使用了，当然你想用还是可以用, vuex4是支持vue3的
 
 现在官方推荐的状态管理库就是 pinia，基于组合式API，类型友好。它也保留了很多vuex的概念，所以切换起来也很容易
 
@@ -551,11 +553,11 @@ export default defineComponent({
 
 </div>
 <div v-click class="relative">
-  <span class="absolute top-24 left-0.5 text-xs">script setup</span>
-  <arrow x1="0" y1="120" x2="70" y2="120" color="gray" width="1" arrowSize="1" />
+  <span class="absolute top-30 left-0.5 text-xs">script setup</span>
+  <arrow x1="0" y1="150" x2="70" y2="150" color="gray" width="1" arrowSize="1" />
 </div>
 
-<div v-after class="setup">
+<div v-after class="setup mt-50px">
 
 ```html
 <script setup lang="ts">
@@ -739,61 +741,6 @@ export default defineConfig({
 
 ---
 
-# UI 组件库集成
-
-[Element Plus](https://element-plus.gitee.io/zh-CN/) / [Ant Design Vue 3.x](https://www.antdv.com/docs/vue/introduce-cn)
-
-<STwoCols>
-<div v-click>
-
-**安装 Element Plus:**
-```bash
-npm install element-plus
-```
-```ts
-// main.ts
-import { createApp } from 'vue'
-import App from './App'
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
-
-createApp(App).use(ElementPlus).mount('#app')
-```
-
-</div>
-<div v-click>
-
-**按需自动导入组件**
-
-```ts
-import { defineConfig } from 'vite'
-import Components from 'unplugin-vue-components/vite'
-import {
-  ElementPlusResolver
-} from 'unplugin-vue-components/resolvers'
-
-export default defineConfig({
-  plugins: [
-    Components({
-      resolvers: [ElementPlusResolver()]
-    })
-  ]
-})
-
-```
-
-</div>
-</STwoCols>
-
-<!--
-国内比较早支持vue3的组件库
-
-Element Plus 是 Element UI 针对 Vue3 的版本，Ant Design Vue 3 以上的版本也都是支持 Vue3 的
-
- -->
-
----
-
 # 代码质量管理
 
 ESLint / Husky
@@ -883,8 +830,8 @@ Vitest & test-utils
 <v-clicks>
 
 - 组合函数库 [VueUse](https://vueuse.org/)
-- 国际化插件 [vue-i18n](https://kazupon.github.io/vue-i18n/)
-- 图标库 [unplugin-icons](https://github.com/antfu/unplugin-icons)
+- UI 组件库 [Element Plus](https://element-plus.gitee.io/zh-CN/#/zh-CN) / [Ant Design Vue](https://www.antdv.com/docs/vue/introduce-cn) / [Vant UI](https://vant-contrib.gitee.io/vant/#/zh-CN)
+- 国际化 [vue-i18n](https://kazupon.github.io/vue-i18n/)
 
 </v-clicks>
 
