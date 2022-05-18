@@ -70,7 +70,7 @@ createApp(App).mount('#app')
 ```html
 <body>
   <div id="app"></div>
-  <script type="module" src="./src/main.js">
+  <script type="module" src="./src/main.js"></script>
 </body>
 ```
 </div>
